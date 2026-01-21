@@ -39,7 +39,19 @@ const i18n = {
   }
 };
 
-let currentLang = localStorage.getItem("lang") || "fi";
+/* ------------------------------
+   AUTO-DETECT LANGUAGE
+------------------------------ */
+function detectBrowserLanguage() {
+  const lang = navigator.language || navigator.userLanguage;
+
+  if (lang.startsWith("fi")) return "fi";
+  if (lang.startsWith("en")) return "en";
+
+  return "fi"; // fallback
+}
+
+let currentLang = localStorage.getItem("lang") || detectBrowserLanguage();
 
 /* ------------------------------
    APPLY LANGUAGE
@@ -59,6 +71,9 @@ function setLanguage(lang) {
   document.getElementById("labelCalcRate").textContent = t.calculatedRate;
   document.getElementById("labelCalcDoses").textContent = t.calculatedDoses;
   document.getElementById("clearAllBtn").textContent = t.clearAll;
+
+  document.getElementById("langToggle").textContent =
+    lang === "fi" ? "EN" : "FI";
 }
 
 setLanguage(currentLang);
@@ -81,7 +96,6 @@ if (localStorage.getItem("theme") === "dark") {
 document.getElementById("langToggle").onclick = () => {
   const next = currentLang === "fi" ? "en" : "fi";
   setLanguage(next);
-  document.getElementById("langToggle").textContent = next.toUpperCase();
 };
 
 /* ------------------------------
@@ -112,8 +126,10 @@ function calculate() {
   const unit = row[2].textContent;
   const minDose = parseFloat(row[3].textContent);
   const maxDose = parseFloat(row[4].textContent);
+  const doseUnit = row[5].textContent;
 
   document.getElementById("concDisplay").textContent = concentration + " " + unit;
+  document.getElementById("doseUnitCell").textContent = doseUnit;
 
   const doseWarning = document.getElementById("doseWarning");
   doseWarning.textContent = "";
@@ -148,7 +164,7 @@ function calculate() {
   document.getElementById("ugKgMin").textContent = ugKgMin.toFixed(3);
 
   const doseInfo = document.getElementById("doseInfo");
-  doseInfo.textContent = `${i18n[currentLang].recommended}: ${minDose}–${maxDose}`;
+  doseInfo.textContent = `${i18n[currentLang].recommended}: ${minDose}–${maxDose} ${doseUnit}`;
 
   if (mgKgH < minDose || mgKgH > maxDose) {
     doseWarning.textContent = i18n[currentLang].warnings.outOfRange;

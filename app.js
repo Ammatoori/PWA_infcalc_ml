@@ -104,6 +104,13 @@ document.getElementById("langToggle").onclick = () => {
 const drugSelect = document.getElementById("drug");
 const laakelista = document.getElementById("laakelista").rows;
 
+// Add empty option
+const emptyOption = document.createElement("option");
+emptyOption.value = "";
+emptyOption.textContent = "";
+drugSelect.appendChild(emptyOption);
+
+// Add drugs
 for (let i = 0; i < laakelista.length; i++) {
   const name = laakelista[i].cells[0].textContent;
   const option = document.createElement("option");
@@ -117,6 +124,16 @@ for (let i = 0; i < laakelista.length; i++) {
 ------------------------------ */
 function calculate() {
   const drugIndex = drugSelect.value;
+
+  // If no drug selected — clear fields and exit
+  if (drugIndex === "") {
+    document.getElementById("concDisplay").textContent = "";
+    document.getElementById("doseUnitCell").textContent = "";
+    document.getElementById("doseWarning").textContent = "";
+    document.getElementById("doseInfo").textContent = "";
+    return;
+  }
+
   const weight = parseFloat(document.getElementById("weight").value);
   const rate = parseFloat(document.getElementById("rate").value);
   const doseInput = parseFloat(document.getElementById("doseInput").value);
@@ -183,6 +200,7 @@ document.getElementById("doseInput").oninput = calculate;
    CLEAR ALL
 ------------------------------ */
 document.getElementById("clearAllBtn").onclick = () => {
+  document.getElementById("drug").value = "";
   document.getElementById("weight").value = "";
   document.getElementById("rate").value = "";
   document.getElementById("doseInput").value = "";
@@ -193,4 +211,6 @@ document.getElementById("clearAllBtn").onclick = () => {
   document.getElementById("ugKgH").textContent = "";
   document.getElementById("ugKgMin").textContent = "";
   document.getElementById("doseInfo").textContent = "";
+  document.getElementById("concDisplay").textContent = "";
+  document.getElementById("doseUnitCell").textContent = "";
 };

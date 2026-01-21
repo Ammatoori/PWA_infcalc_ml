@@ -72,6 +72,7 @@ function setLanguage(lang) {
   document.getElementById("labelCalcDoses").textContent = t.calculatedDoses;
   document.getElementById("clearAllBtn").textContent = t.clearAll;
 
+  // кнопка показывает язык, НА КОТОРЫЙ можно переключиться
   document.getElementById("langToggle").textContent =
     lang === "fi" ? "EN" : "FI";
 }
@@ -96,6 +97,7 @@ if (localStorage.getItem("theme") === "dark") {
 document.getElementById("langToggle").onclick = () => {
   const next = currentLang === "fi" ? "en" : "fi";
   setLanguage(next);
+  updateDoseHint(); // обновляем подсказку при смене языка
 };
 
 /* ------------------------------
@@ -120,6 +122,26 @@ for (let i = 0; i < laakelista.length; i++) {
 }
 
 /* ------------------------------
+   SHOW DOSE HINT IMMEDIATELY
+------------------------------ */
+function updateDoseHint() {
+  const drugIndex = drugSelect.value;
+
+  if (drugIndex === "") {
+    document.getElementById("doseInfo").textContent = "";
+    return;
+  }
+
+  const row = laakelista[drugIndex].cells;
+  const minDose = parseFloat(row[3].textContent);
+  const maxDose = parseFloat(row[4].textContent);
+  const doseUnit = row[5].textContent;
+
+  document.getElementById("doseInfo").textContent =
+    `${i18n[currentLang].recommended}: ${minDose}–${maxDose} ${doseUnit}`;
+}
+
+/* ------------------------------
    MAIN CALCULATION LOGIC
 ------------------------------ */
 function calculate() {
@@ -133,6 +155,8 @@ function calculate() {
     document.getElementById("doseInfo").textContent = "";
     return;
   }
+
+  updateDoseHint(); // подсказка всегда актуальна
 
   const weight = parseFloat(document.getElementById("weight").value);
   const rate = parseFloat(document.getElementById("rate").value);
@@ -180,9 +204,6 @@ function calculate() {
   document.getElementById("ugKgH").textContent = ugKgH.toFixed(2);
   document.getElementById("ugKgMin").textContent = ugKgMin.toFixed(3);
 
-  const doseInfo = document.getElementById("doseInfo");
-  doseInfo.textContent = `${i18n[currentLang].recommended}: ${minDose}–${maxDose} ${doseUnit}`;
-
   if (mgKgH < minDose || mgKgH > maxDose) {
     doseWarning.textContent = i18n[currentLang].warnings.outOfRange;
   }
@@ -191,7 +212,11 @@ function calculate() {
 /* ------------------------------
    EVENT LISTENERS
 ------------------------------ */
-document.getElementById("drug").onchange = calculate;
+document.getElementById("drug").onchange = () => {
+  updateDoseHint();
+  calculate();
+};
+
 document.getElementById("weight").oninput = calculate;
 document.getElementById("rate").oninput = calculate;
 document.getElementById("doseInput").oninput = calculate;

@@ -2,24 +2,54 @@
 <html lang="fi">
 <head>
   <meta charset="UTF-8" />
-  <title>Infuusiolaskuri</title>
+  <title id="title"></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- PWA manifest -->
-  <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#e6f3ff">
-
-  <!-- iOS PWA -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <link rel="apple-touch-icon" href="./icon-512.png">
-
   <style>
-    body { font-family: system-ui, sans-serif; background: #f5f5f5; padding: 20px; }
-    h1 { text-align: center; font-size: 28px; margin-bottom: 20px; }
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+      color: #000;
+    }
 
-    table { border-collapse: collapse; width: 100%; max-width: 900px; margin: auto; table-layout: fixed; }
-    td { border: 1px solid #c0c0c0; padding: 6px; font-size: 15px; }
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 520px;
+      margin: auto;
+      table-layout: fixed;
+    }
+
+    td {
+      border: 1px solid #d0d0d0;
+      padding: 8px;
+      font-size: 15px;
+    }
+
+    table td:nth-child(1) { width: 28%; }
+    table td:nth-child(2) { width: 59%; }
+    table td:nth-child(3) { width: 13%; }
+
+    table td:nth-child(2) {
+      text-align: right;
+      padding-left: 0;
+    }
+
+    td span {
+      display: block;
+      text-align: right;
+    }
+
+    .blue td:nth-child(2) {
+      text-align: right;
+    }
 
     .pink { background: #ffe6f2; }
     .gray { background: #f2f2f2; }
@@ -29,21 +59,12 @@
     .center { text-align: center; }
 
     input, select {
-      width: 100%; border: none; background: transparent;
-      font: inherit; padding: 0; outline: none;
-    }
-
-    #drug {
       width: 100%;
-      padding-right: 10px;
-      font-size: 16px;
-    }
-
-    .warning { background: #ffcccc; color: #900; font-weight: 700; }
-
-    .active-field {
-      background: #fff3cd !important;
-      transition: background 0.2s;
+      border: none;
+      background: transparent;
+      font: inherit;
+      padding: 0;
+      outline: none;
     }
 
     #clearAllBtn {
@@ -57,179 +78,129 @@
       cursor: pointer;
     }
 
-    @media (max-width: 600px) {
-      body { padding: 10px; }
-      h1 { font-size: 22px; margin-bottom: 15px; }
-      table { width: 100%; font-size: 17px; }
-      td { padding: 10px; }
-      input, select { font-size: 18px; padding: 8px; }
-      #drug { font-size: 18px; padding: 8px; }
-      tr { height: 55px; }
-      #mgH, #mlH, #mgKgH, #ugKgH, #ugKgMin {
-        font-size: 20px;
-        font-weight: 600;
-      }
-      #clearAllBtn {
-        width: 100%;
-        font-size: 18px;
-        padding: 14px;
-        margin-top: 25px;
-      }
-      .active-field {
-        background: #ffe9a8 !important;
-      }
+    #themeToggle, #langToggle {
+      position: fixed;
+      top: 12px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      border: 1px solid #aaa;
+      background: #ddd;
+      z-index: 999;
     }
-/* -----------------------------
-   ТЁМНАЯ ТЕМА
-   Активируется, если <body class="dark">
-------------------------------*/
-body.dark {
-  background: #1c1f22;
-  color: #e6e6e6;
-}
 
-/* Заголовок */
-body.dark h1 {
-  color: #d0e4ff;
-}
+    #themeToggle { right: 12px; }
+    #langToggle { right: 70px; }
 
-/* Таблица */
-body.dark table td {
-  border-color: #444;
-  color: #e6e6e6;
-}
-
-/* Цветовые зоны */
-body.dark .pink {
-  background: #4a2f3b !important;
-  color: #ffdce8;
-}
-
-body.dark .gray {
-  background: #2b2b2b !important;
-  color: #e6e6e6;
-}
-
-body.dark .blue {
-  background: #243447 !important;
-  color: #d0e4ff;
-}
-
-/* Активное поле */
-body.dark .active-field {
-  background: #5a4a1e !important;
-}
-
-/* Поля ввода */
-body.dark input,
-body.dark select {
-  color: #ffffff;
-}
-
-/* Предупреждение */
-body.dark .warning {
-  background: #662222 !important;
-  color: #ffaaaa !important;
-}
-
-/* Кнопка очистки */
-body.dark #clearAllBtn {
-  background: #2a3b4f;
-  border-color: #4f7aa3;
-  color: #d0e4ff;
-}
-
-body.dark #clearAllBtn:hover {
-  background: #35506a;
-}
+    body.dark { background: #1c1f22; color: #e6e6e6; }
+    body.dark table td { border-color: #444; color: #e6e6e6; }
+    body.dark .pink { background: #4a2f3b !important; }
+    body.dark .gray { background: #2b2b2b !important; }
+    body.dark .blue { background: #243447 !important; }
+    body.dark input, body.dark select { color: #ffffff; }
+    body.dark #clearAllBtn { background: #2a3b4f; border-color: #4f7aa3; color: #d0e4ff; }
+    body.dark #themeToggle, body.dark #langToggle {
+      background: #3a3a3a;
+      color: #fff;
+      border-color: #666;
+    }
   </style>
 </head>
+
 <body>
 
-<h1>Infuusiolaskuri</h1>
+<button id="themeToggle">🌙</button>
+<button id="langToggle">EN</button>
+
+<h1 id="title"></h1>
 
 <!-- Hidden laakelista -->
 <table id="laakelista" style="display:none;">
-  <tr><td>Adrenalin 20 µg/ml</td><td>20</td><td>µg/ml</td><td>Aloitus 0,01–0,05 µg/kg/min. Ylläpito 0,1–0,5 µg/kg/min. Iskemia-riski >1,0 µg/kg/min</td></tr>
-  <tr><td>Noradrenalin 40 µg/ml</td><td>40</td><td>µg/ml</td><td>Aloitus 0,01–0,05 µg/kg/min. Ylläpito 0,1–0,5 µg/kg/min. Iskemia-riski >1,0 µg/kg/min</td></tr>
-  <tr><td>Noradrenalin 80 µg/ml</td><td>80</td><td>µg/ml</td><td>Aloitus 0,01–0,05 µg/kg/min. Ylläpito 0,1–0,5 µg/kg/min. Iskemia-riski >1,0 µg/kg/min</td></tr>
-  <tr><td>Dobutamine 500 µg/ml</td><td>500</td><td>µg/ml</td><td>2–20 µg/kg/min</td></tr>
-  <tr><td>Milrinone 200 µg/ml</td><td>200</td><td>µg/ml</td><td>0,25–0,75 µg/kg/min</td></tr>
-  <tr><td>Ketamine 25 mg/ml</td><td>25</td><td>mg/ml</td><td>0,5–2 mg/kg/h</td></tr>
-  <tr><td>Propofol 20 mg/ml</td><td>20</td><td>mg/ml</td><td>1–4 mg/kg/h</td></tr>
-  <tr><td>Remifentanyl 50 µg/ml</td><td>50</td><td>µg/ml</td><td>0,05–0,2 µg/kg/min</td></tr>
+  <tr><td>Remifentanyl 50 µg/ml</td><td>50</td><td>µg/ml</td><td>0.05</td><td>0.2</td></tr>
+  <tr><td>Propofol 20 mg/ml</td><td>20</td><td>mg/ml</td><td>1</td><td>4</td></tr>
+  <tr><td>Ketamine 25 mg/ml</td><td>25</td><td>mg/ml</td><td>0.5</td><td>2</td></tr>
+  <tr><td>Milrinone 200 µg/ml</td><td>200</td><td>µg/ml</td><td>0.25</td><td>0.75</td></tr>
+  <tr><td>Dobutamine 500 µg/ml</td><td>500</td><td>µg/ml</td><td>2</td><td>20</td></tr>
+  <tr><td>Noradrenalin 80 µg/ml</td><td>80</td><td>µg/ml</td><td>0.01</td><td>0.5</td></tr>
+  <tr><td>Noradrenalin 40 µg/ml</td><td>40</td><td>µg/ml</td><td>0.01</td><td>0.5</td></tr>
+  <tr><td>Adrenalin 20 µg/ml</td><td>20</td><td>µg/ml</td><td>0.01</td><td>0.5</td></tr>
 </table>
 
 <table>
 
   <tr class="pink">
-    <td class="bold">Lääke</td>
+    <td class="bold" id="labelDrug"></td>
     <td class="gray"><select id="drug"></select></td>
     <td class="gray" id="concDisplay"></td>
-    <td></td><td></td><td></td>
   </tr>
 
   <tr class="pink">
-    <td class="bold">Paino</td>
+    <td class="bold" id="labelWeight"></td>
     <td class="gray"><input id="weight" type="number" step="0.1"></td>
     <td class="gray">kg</td>
-    <td></td><td></td><td></td>
+  </tr>
+
+  <tr><td colspan="3" style="height:6px;background:transparent;"></td></tr>
+
+  <tr class="pink">
+    <td class="bold" id="labelRate"></td>
+    <td class="gray"><input id="rate" type="number" step="0.01"></td>
+    <td class="gray">ml/h</td>
+  </tr>
+
+  <tr>
+    <td class="center bold" id="labelOr"></td>
+    <td colspan="2"></td>
   </tr>
 
   <tr class="pink">
-    <td class="bold">Nopeus</td>
-    <td class="gray"><input id="rate" type="number" step="0.01"></td>
-    <td class="gray">ml/h</td>
-
-    <td class="bold center">Tavoitettu annos</td>
+    <td class="bold" id="labelDose"></td>
     <td class="gray"><input id="doseInput" type="number" step="0.001"></td>
     <td class="gray" id="doseUnitCell"></td>
   </tr>
 
-  <tr><td class="warning" id="doseWarning" colspan="6"></td></tr>
+  <tr><td class="gray bold" colspan="3" id="doseWarning"></td></tr>
 
   <tr class="blue">
-    <td class="bold">Annokset</td><td></td><td></td>
-    <td class="bold">Nopeus</td><td></td><td></td>
+    <td class="bold" id="labelCalcRate"></td>
+    <td class="gray">ml/h</td>
+    <td><span id="mlH"></span></td>
   </tr>
 
   <tr class="blue">
-    <td class="bold">mg/h</td><td><span id="mgH"></span></td><td></td>
-    <td class="bold">ml/h</td><td><span id="mlH"></span></td><td></td>
+    <td class="bold" id="labelCalcDoses"></td>
+    <td class="gray">mg/h</td>
+    <td><span id="mgH"></span></td>
   </tr>
 
-  <tr class="blue"><td class="bold">mg/kg/h</td><td><span id="mgKgH"></span></td><td></td><td></td><td></td><td></td></tr>
+  <tr class="blue">
+    <td></td>
+    <td class="gray">mg/kg/h</td>
+    <td><span id="mgKgH"></span></td>
+  </tr>
 
-  <tr class="blue"><td class="bold">µg/kg/h</td><td><span id="ugKgH"></span></td><td></td><td></td><td></td><td></td></tr>
+  <tr class="blue">
+    <td></td>
+    <td class="gray">µg/kg/h</td>
+    <td><span id="ugKgH"></span></td>
+  </tr>
 
-  <tr class="blue"><td class="bold">µg/kg/min</td><td><span id="ugKgMin"></span></td><td></td><td></td><td></td><td></td></tr>
+  <tr class="blue">
+    <td></td>
+    <td class="gray">µg/kg/min</td>
+    <td><span id="ugKgMin"></span></td>
+  </tr>
 
-  <tr><td class="gray bold" colspan="6" id="doseInfo"></td></tr>
+  <tr>
+    <td class="gray bold" colspan="3" id="doseInfo"></td>
+  </tr>
 
 </table>
 
-<button id="clearAllBtn">Tyhjennä kaikki</button>
+<button id="clearAllBtn"></button>
 
 <script src="app.js"></script>
-
-<!-- Service worker -->
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("./sw.js");
-  }
-</script>
-<script>
-  function applySystemTheme() {
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    document.body.classList.toggle("dark", prefersDark);
-  }
-
-  // Первичная установка
-  applySystemTheme();
-
-  // Реакция на изменение системной темы
-  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applySystemTheme);
-</script>
 
 </body>
 </html>

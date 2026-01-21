@@ -93,13 +93,45 @@
     #themeToggle { right: 12px; }
     #langToggle { right: 70px; }
 
-    body.dark { background: #1c1f22; color: #e6e6e6; }
-    body.dark table td { border-color: #444; color: #e6e6e6; }
+    /* Warning style */
+    #doseWarning {
+      background: #fff3cd;
+      color: #d8000c;
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: 1px solid #f5c06f;
+    }
+
+    body.dark {
+      background: #1c1f22;
+      color: #e6e6e6;
+    }
+
+    body.dark table td {
+      border-color: #444;
+      color: #e6e6e6;
+    }
+
     body.dark .pink { background: #4a2f3b !important; }
     body.dark .gray { background: #2b2b2b !important; }
     body.dark .blue { background: #243447 !important; }
-    body.dark input, body.dark select { color: #ffffff; }
-    body.dark #clearAllBtn { background: #2a3b4f; border-color: #4f7aa3; color: #d0e4ff; }
+
+    body.dark #doseWarning {
+      background: #5a4a1e;
+      color: #ffb3b3;
+      border-color: #8a6d3b;
+    }
+
+    body.dark input, body.dark select {
+      color: #ffffff;
+    }
+
+    body.dark #clearAllBtn {
+      background: #2a3b4f;
+      border-color: #4f7aa3;
+      color: #d0e4ff;
+    }
+
     body.dark #themeToggle, body.dark #langToggle {
       background: #3a3a3a;
       color: #fff;
@@ -111,20 +143,20 @@
 <body>
 
 <button id="themeToggle">🌙</button>
-<button id="langToggle">EN</button>
+<button id="langToggle"></button>
 
 <h1 id="title"></h1>
 
-<!-- Hidden laakelista -->
+<!-- Hidden laakelista with dynamic dose units -->
 <table id="laakelista" style="display:none;">
-  <tr><td>Remifentanyl 50 µg/ml</td><td>50</td><td>µg/ml</td><td>0.05</td><td>0.2</td></tr>
-  <tr><td>Propofol 20 mg/ml</td><td>20</td><td>mg/ml</td><td>1</td><td>4</td></tr>
-  <tr><td>Ketamine 25 mg/ml</td><td>25</td><td>mg/ml</td><td>0.5</td><td>2</td></tr>
-  <tr><td>Milrinone 200 µg/ml</td><td>200</td><td>µg/ml</td><td>0.25</td><td>0.75</td></tr>
-  <tr><td>Dobutamine 500 µg/ml</td><td>500</td><td>µg/ml</td><td>2</td><td>20</td></tr>
-  <tr><td>Noradrenalin 80 µg/ml</td><td>80</td><td>µg/ml</td><td>0.01</td><td>0.5</td></tr>
-  <tr><td>Noradrenalin 40 µg/ml</td><td>40</td><td>µg/ml</td><td>0.01</td><td>0.5</td></tr>
-  <tr><td>Adrenalin 20 µg/ml</td><td>20</td><td>µg/ml</td><td>0.01</td><td>0.5</td></tr>
+  <tr><td>Remifentanyl 50 µg/ml</td><td>50</td><td>µg/ml</td><td>0.05</td><td>0.2</td><td>µg/kg/min</td></tr>
+  <tr><td>Propofol 20 mg/ml</td><td>20</td><td>mg/ml</td><td>1</td><td>4</td><td>mg/kg/h</td></tr>
+  <tr><td>Ketamine 25 mg/ml</td><td>25</td><td>mg/ml</td><td>0.5</td><td>2</td><td>mg/kg/h</td></tr>
+  <tr><td>Milrinone 200 µg/ml</td><td>200</td><td>µg/ml</td><td>0.25</td><td>0.75</td><td>µg/kg/min</td></tr>
+  <tr><td>Dobutamine 500 µg/ml</td><td>500</td><td>µg/ml</td><td>2</td><td>20</td><td>µg/kg/min</td></tr>
+  <tr><td>Noradrenalin 80 µg/ml</td><td>80</td><td>µg/ml</td><td>0.01</td><td>0.5</td><td>µg/kg/min</td></tr>
+  <tr><td>Noradrenalin 40 µg/ml</td><td>40</td><td>µg/ml</td><td>0.01</td><td>0.5</td><td>µg/kg/min</td></tr>
+  <tr><td>Adrenalin 20 µg/ml</td><td>20</td><td>µg/ml</td><td>0.01</td><td>0.5</td><td>µg/kg/min</td></tr>
 </table>
 
 <table>

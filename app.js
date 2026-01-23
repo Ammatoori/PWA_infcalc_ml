@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+  /* ------------------------------
+     LANGUAGE DICTIONARY
+  ------------------------------ */
   const i18n = {
     fi: {
       title: "Infuusiolaskuri",
@@ -17,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         outOfRange: "Annos on suosituksen ulkopuolella"
       }
     },
+
     en: {
       title: "Infusion Calculator",
       drug: "Drug",
@@ -36,20 +41,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  const langToggle = document.getElementById("langToggle");
-  const themeToggle = document.getElementById("themeToggle");
-  const infoToggle = document.getElementById("infoToggle");
-  const infoBox = document.getElementById("infoBox");
-  const infoClose = document.getElementById("infoClose");
+  /* ------------------------------
+     LANGUAGE SETUP
+  ------------------------------ */
+  function detectBrowserLanguage() {
+    const lang = navigator.language || navigator.userLanguage;
+    if (lang.startsWith("fi")) return "fi";
+    if (lang.startsWith("en")) return "en";
+    return "fi";
+  }
 
-  const drugSelect = document.getElementById("drug");
-  const laakelista = document.getElementById("laakelista").rows;
-
-  let currentLang = localStorage.getItem("lang") || (navigator.language.startsWith("fi") ? "fi" : "en");
+  let currentLang = localStorage.getItem("lang") || detectBrowserLanguage();
 
   function setLanguage(lang) {
     currentLang = lang;
     localStorage.setItem("lang", lang);
+
     const t = i18n[lang];
 
     document.getElementById("title").textContent = t.title;
@@ -61,39 +68,45 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("labelCalcRate").textContent = t.calculatedRate;
     document.getElementById("labelCalcDoses").textContent = t.calculatedDoses;
     document.getElementById("clearAllBtn").textContent = t.clearAll;
-    langToggle.textContent = lang === "fi" ? "EN" : "FI";
+
+    document.getElementById("langToggle").textContent =
+      lang === "fi" ? "EN" : "FI";
 
     updateDoseHint();
   }
 
   setLanguage(currentLang);
 
+  /* ------------------------------
+     THEME TOGGLE
+  ------------------------------ */
+  const themeToggle = document.getElementById("themeToggle");
+
+  themeToggle.onclick = () => {
+    document.body.classList.toggle("dark");
+    localStorage.setItem(
+      "theme",
+      document.body.classList.contains("dark") ? "dark" : "light"
+    );
+  };
+
   if (localStorage.getItem("theme") === "dark") {
     document.body.classList.add("dark");
   }
 
-  themeToggle.onclick = () => {
-    document.body.classList.toggle("dark");
-    localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+  /* ------------------------------
+     LANGUAGE TOGGLE
+  ------------------------------ */
+  document.getElementById("langToggle").onclick = () => {
+    const next = currentLang === "fi" ? "en" : "fi";
+    setLanguage(next);
   };
 
-  langToggle.onclick = () => {
-    setLanguage(currentLang === "fi" ? "en" : "fi");
-  };
-
-  infoToggle.onclick = () => {
-    infoBox.style.display = "flex";
-  };
-
-  infoClose.onclick = () => {
-    infoBox.style.display = "none";
-  };
-
-  infoBox.onclick = (e) => {
-    if (e.target === infoBox) {
-      infoBox.style.display = "none";
-    }
-  };
+  /* ------------------------------
+     POPULATE DRUG LIST
+  ------------------------------ */
+  const drugSelect = document.getElementById("drug");
+  const laakelista = document.getElementById("laakelista").rows;
 
   const emptyOption = document.createElement("option");
   emptyOption.value = "";
@@ -108,22 +121,32 @@ document.addEventListener("DOMContentLoaded", () => {
     drugSelect.appendChild(option);
   }
 
+  /* ------------------------------
+     DOSE HINT
+  ------------------------------ */
   function updateDoseHint() {
     const drugIndex = drugSelect.value;
+
     if (drugIndex === "") {
       document.getElementById("doseInfo").textContent = "";
       return;
     }
+
     const row = laakelista[drugIndex].cells;
     const minDose = parseFloat(row[3].textContent);
     const maxDose = parseFloat(row[4].textContent);
     const doseUnit = row[5].textContent;
+
     document.getElementById("doseInfo").textContent =
       `${i18n[currentLang].recommended}: ${minDose}–${maxDose} ${doseUnit}`;
   }
 
+  /* ------------------------------
+     CALCULATION
+  ------------------------------ */
   function calculate() {
     const drugIndex = drugSelect.value;
+
     if (drugIndex === "") {
       document.getElementById("concDisplay").textContent = "";
       document.getElementById("doseUnitCell").textContent = "";
@@ -145,7 +168,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const maxDose = parseFloat(row[4].textContent);
     const doseUnit = row[5].textContent;
 
-    document.getElementById("concDisplay").textContent = concentration + " " + unit;
+    document.getElementById("concDisplay").textContent =
+      concentration + " " + unit;
     document.getElementById("doseUnitCell").textContent = doseUnit;
 
     const doseWarning = document.getElementById("doseWarning");
@@ -185,14 +209,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  document.getElementById("weight").oninput = calculate;
-  document.getElementById("rate").oninput = calculate;
-  document.getElementById("doseInput").oninput = calculate;
+  /* ------------------------------
+     EVENT LISTENERS
+  ------------------------------ */
   drugSelect.onchange = () => {
     updateDoseHint();
     calculate();
   };
 
+  document.getElementById("weight").oninput = calculate;
+  document.getElementById("rate").oninput = calculate;
+  document.getElementById("doseInput").oninput = calculate;
+
+  /* ------------------------------
+     CLEAR ALL
+  ------------------------------ */
   document.getElementById("clearAllBtn").onclick = () => {
     document.getElementById("drug").value = "";
     document.getElementById("weight").value = "";
@@ -208,4 +239,26 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("concDisplay").textContent = "";
     document.getElementById("doseUnitCell").textContent = "";
   };
+
+  /* ------------------------------
+     INFO BOX
+  ------------------------------ */
+  const infoToggle = document.getElementById("infoToggle");
+  const infoBox = document.getElementById("infoBox");
+  const infoClose = document.getElementById("infoClose");
+
+  infoToggle.onclick = () => {
+    infoBox.style.display = "flex";
+  };
+
+  infoClose.onclick = () => {
+    infoBox.style.display = "none";
+  };
+
+  infoBox.onclick = (e) => {
+    if (e.target === infoBox) {
+      infoBox.style.display = "none";
+    }
+  };
+
 });

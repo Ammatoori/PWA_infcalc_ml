@@ -74,7 +74,7 @@
       cursor: pointer;
     }
 
-    #themeToggle, #langToggle {
+    #themeToggle, #langToggle, #infoToggle {
       position: fixed;
       top: 12px;
       padding: 6px 10px;
@@ -89,6 +89,13 @@
     #themeToggle { right: 12px; }
     #langToggle { right: 70px; }
 
+    #infoToggle {
+      right: 128px;
+      padding: 4px 8px;
+      border-radius: 50%;
+      font-weight: 700;
+    }
+
     /* Warning style */
     #doseWarning {
       background: #fff3cd;
@@ -96,8 +103,72 @@
       padding: 6px 10px;
       border-radius: 4px;
       border: 1px solid #f5c06f;
+      text-align: center;
     }
 
+    #doseInfo {
+      text-align: center;
+    }
+
+    /* INFO BOX */
+    #infoBox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    #infoContent {
+      max-width: 420px;
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 16px 18px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    #infoTitle {
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    #infoText {
+      margin-bottom: 12px;
+    }
+
+    #infoClose {
+      display: block;
+      margin: 0 auto;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #aaa;
+      background: #f2f2f2;
+      cursor: pointer;
+    }
+
+    #infoLink {
+      margin-top: 12px;
+      font-size: 13px;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    #infoLink a {
+      color: #0077cc;
+      text-decoration: none;
+    }
+
+    #infoLink a:hover {
+      text-decoration: underline;
+    }
+
+    /* Dark theme */
     body.dark {
       background: #1c1f22;
       color: #e6e6e6;
@@ -118,20 +189,19 @@
       border-color: #8a6d3b;
     }
 
-    body.dark input, body.dark select {
-      color: #ffffff;
+    body.dark #infoContent {
+      background: #2b2b2b;
+      color: #f0f0f0;
     }
 
-    body.dark #clearAllBtn {
-      background: #2a3b4f;
-      border-color: #4f7aa3;
-      color: #d0e4ff;
-    }
-
-    body.dark #themeToggle, body.dark #langToggle {
+    body.dark #infoClose {
       background: #3a3a3a;
-      color: #fff;
       border-color: #666;
+      color: #fff;
+    }
+
+    body.dark #infoLink a {
+      color: #66aaff;
     }
   </style>
 </head>
@@ -140,10 +210,38 @@
 
 <button id="themeToggle">🌙</button>
 <button id="langToggle"></button>
+<button id="infoToggle">i</button>
+
+<!-- INFO BOX -->
+<div id="infoBox">
+  <div id="infoContent">
+    <div id="infoTitle">Infusion Calculator</div>
+
+    <div id="infoText">
+      This tool is designed for healthcare professionals who prepare and adjust continuous drug infusions.
+      It provides weight‑based dose calculations, infusion rates, and unit conversions for commonly used medications.
+      <br><br>
+      Supported features include:<br>
+      • Dose‑to‑rate and rate‑to‑dose conversions<br>
+      • Weight‑adjusted dosing<br>
+      • Drug‑specific recommended dose ranges<br>
+      • Automatic unit handling (mg/kg/h, µg/kg/min, etc.)<br><br>
+      This tool is intended to support clinical workflow, not replace clinical judgment.
+      Always verify calculations according to local protocols and drug monographs.
+    </div>
+
+    <div id="infoLink">
+      Source code: <a href="https://github.com/USERNAME/REPOSITORY" target="_blank">GitHub</a><br>
+      Developed by D.M. (2026)
+    </div>
+
+    <button id="infoClose">Close</button>
+  </div>
+</div>
 
 <h1 id="title"></h1>
 
-<!-- Hidden laakelista with dynamic dose units -->
+<!-- Hidden laakelista -->
 <table id="laakelista" style="display:none;">
   <tr><td>Remifentanyl 50 µg/ml</td><td>50</td><td>µg/ml</td><td>0.05</td><td>0.2</td><td>µg/kg/min</td></tr>
   <tr><td>Propofol 20 mg/ml</td><td>20</td><td>mg/ml</td><td>1</td><td>4</td><td>mg/kg/h</td></tr>

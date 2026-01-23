@@ -75,9 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateDoseHint();
   }
 
-  setLanguage(currentLang);
-
-  /* ------------------------------
+   /* ------------------------------
      THEME TOGGLE
   ------------------------------ */
   const themeToggle = document.getElementById("themeToggle");
@@ -93,14 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (localStorage.getItem("theme") === "dark") {
     document.body.classList.add("dark");
   }
-
-  /* ------------------------------
-     LANGUAGE TOGGLE
-  ------------------------------ */
-  document.getElementById("langToggle").onclick = () => {
-    const next = currentLang === "fi" ? "en" : "fi";
-    setLanguage(next);
-  };
 
   /* ------------------------------
      POPULATE DRUG LIST
@@ -121,6 +111,16 @@ document.addEventListener("DOMContentLoaded", () => {
     drugSelect.appendChild(option);
   }
 
+   /* ------------------------------
+     LANGUAGE TOGGLE
+  ------------------------------ */
+  document.getElementById("langToggle").onclick = () => {
+    const next = currentLang === "fi" ? "en" : "fi";
+    setLanguage(next);
+  };
+
+   setLanguage(currentLang);
+  
   /* ------------------------------
      DOSE HINT
   ------------------------------ */
@@ -262,3 +262,4 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
 });
+

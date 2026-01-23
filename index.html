@@ -74,6 +74,7 @@
       cursor: pointer;
     }
 
+    /* TOP BUTTONS */
     #themeToggle, #langToggle, #infoToggle {
       position: fixed;
       top: 12px;
@@ -88,7 +89,6 @@
 
     #themeToggle { right: 12px; }
     #langToggle { right: 70px; }
-
     #infoToggle {
       right: 128px;
       padding: 4px 8px;
@@ -96,7 +96,7 @@
       font-weight: 700;
     }
 
-    /* Warning style */
+    /* WARNING */
     #doseWarning {
       background: #fff3cd;
       color: #d8000c;
@@ -118,7 +118,7 @@
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 1000;
+      z-index: 2000;
     }
 
     #infoContent {
@@ -168,7 +168,7 @@
       text-decoration: underline;
     }
 
-    /* Dark theme */
+    /* DARK THEME */
     body.dark {
       background: #1c1f22;
       color: #e6e6e6;
@@ -241,7 +241,7 @@
 
 <h1 id="title"></h1>
 
-<!-- Hidden laakelista -->
+<!-- HIDDEN DRUG LIST -->
 <table id="laakelista" style="display:none;">
   <tr><td>Remifentanyl 50 µg/ml</td><td>50</td><td>µg/ml</td><td>0.05</td><td>0.2</td><td>µg/kg/min</td></tr>
   <tr><td>Propofol 20 mg/ml</td><td>20</td><td>mg/ml</td><td>1</td><td>4</td><td>mg/kg/h</td></tr>
@@ -330,4 +330,3 @@
 
 </body>
 </html>
-

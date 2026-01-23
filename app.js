@@ -50,7 +50,7 @@ function detectBrowserLanguage() {
   if (lang.startsWith("fi")) return "fi";
   if (lang.startsWith("en")) return "en";
 
-  return "fi"; // fallback
+  return "fi";
 }
 
 let currentLang = localStorage.getItem("lang") || detectBrowserLanguage();
@@ -108,13 +108,11 @@ document.getElementById("langToggle").onclick = () => {
 const drugSelect = document.getElementById("drug");
 const laakelista = document.getElementById("laakelista").rows;
 
-// Add empty option
 const emptyOption = document.createElement("option");
 emptyOption.value = "";
 emptyOption.textContent = "";
 drugSelect.appendChild(emptyOption);
 
-// Add drugs
 for (let i = 0; i < laakelista.length; i++) {
   const name = laakelista[i].cells[0].textContent;
   const option = document.createElement("option");
@@ -124,7 +122,7 @@ for (let i = 0; i < laakelista.length; i++) {
 }
 
 /* ------------------------------
-   SHOW DOSE HINT IMMEDIATELY
+   SHOW DOSE HINT
 ------------------------------ */
 function updateDoseHint() {
   const drugIndex = drugSelect.value;
@@ -144,7 +142,7 @@ function updateDoseHint() {
 }
 
 /* ------------------------------
-   MAIN CALCULATION LOGIC
+   MAIN CALCULATION
 ------------------------------ */
 function calculate() {
   const drugIndex = drugSelect.value;

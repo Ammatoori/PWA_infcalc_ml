@@ -72,9 +72,10 @@ function setLanguage(lang) {
   document.getElementById("labelCalcDoses").textContent = t.calculatedDoses;
   document.getElementById("clearAllBtn").textContent = t.clearAll;
 
-  // кнопка показывает язык, НА КОТОРЫЙ можно переключиться
   document.getElementById("langToggle").textContent =
     lang === "fi" ? "EN" : "FI";
+
+  updateDoseHint();
 }
 
 setLanguage(currentLang);
@@ -97,7 +98,6 @@ if (localStorage.getItem("theme") === "dark") {
 document.getElementById("langToggle").onclick = () => {
   const next = currentLang === "fi" ? "en" : "fi";
   setLanguage(next);
-  updateDoseHint(); // обновляем подсказку при смене языка
 };
 
 /* ------------------------------
@@ -147,7 +147,6 @@ function updateDoseHint() {
 function calculate() {
   const drugIndex = drugSelect.value;
 
-  // If no drug selected — clear fields and exit
   if (drugIndex === "") {
     document.getElementById("concDisplay").textContent = "";
     document.getElementById("doseUnitCell").textContent = "";
@@ -156,7 +155,7 @@ function calculate() {
     return;
   }
 
-  updateDoseHint(); // подсказка всегда актуальна
+  updateDoseHint();
 
   const weight = parseFloat(document.getElementById("weight").value);
   const rate = parseFloat(document.getElementById("rate").value);
@@ -238,4 +237,25 @@ document.getElementById("clearAllBtn").onclick = () => {
   document.getElementById("doseInfo").textContent = "";
   document.getElementById("concDisplay").textContent = "";
   document.getElementById("doseUnitCell").textContent = "";
+};
+
+/* ------------------------------
+   INFO BOX TOGGLE
+------------------------------ */
+const infoBox = document.getElementById("infoBox");
+const infoToggle = document.getElementById("infoToggle");
+const infoClose = document.getElementById("infoClose");
+
+infoToggle.onclick = () => {
+  infoBox.style.display = "flex";
+};
+
+infoClose.onclick = () => {
+  infoBox.style.display = "none";
+};
+
+infoBox.onclick = (e) => {
+  if (e.target === infoBox) {
+    infoBox.style.display = "none";
+  }
 };

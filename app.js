@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", () => {
+
 /* ------------------------------
    LANGUAGE DICTIONARY
 ------------------------------ */
@@ -259,3 +261,5 @@ infoBox.onclick = (e) => {
     infoBox.style.display = "none";
   }
 };
+
+}); // END DOMContentLoaded

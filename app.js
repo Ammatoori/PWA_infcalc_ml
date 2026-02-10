@@ -157,7 +157,17 @@ function doseToMgKgH(value, doseUnit) {
 
   throw new Error("Unsupported dose unit: " + doseUnit);
 }
-  
+
+  function concToUgPerMl(value, unit) {
+  const u = unit.replace(/\s/g, "").toLowerCase();
+
+  if (u === "µg/ml" || u === "ug/ml" || u === "mcg/ml") return value;
+
+  if (u === "mg/ml") return value * 1000;
+
+  throw new Error("Unsupported concentration unit: " + unit);
+}
+
   /* ------------------------------
      CALCULATION
   ------------------------------ */
@@ -280,5 +290,6 @@ function doseToMgKgH(value, doseUnit) {
   };
 
 });
+
 
 

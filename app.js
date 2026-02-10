@@ -141,6 +141,23 @@ document.addEventListener("DOMContentLoaded", () => {
       `${i18n[currentLang].recommended}: ${minDose}–${maxDose} ${doseUnit}`;
   }
 
+/* ------------------------------
+   DOSE CONVERSION HELPER
+------------------------------ */
+function doseToMgKgH(value, doseUnit) {
+  const u = doseUnit.replace(/\s/g, "").toLowerCase();
+
+  if (u === "mg/kg/h" || u === "mg/kg/hr") return value;
+
+  if (u === "µg/kg/h" || u === "ug/kg/h" || u === "mcg/kg/h") return value / 1000;
+
+  if (u === "µg/kg/min" || u === "ug/kg/min" || u === "mcg/kg/min") return (value * 60) / 1000;
+
+  if (u === "ng/kg/min") return (value * 60) / 1e6;
+
+  throw new Error("Unsupported dose unit: " + doseUnit);
+}
+  
   /* ------------------------------
      CALCULATION
   ------------------------------ */
@@ -187,7 +204,8 @@ document.addEventListener("DOMContentLoaded", () => {
       mlH = rate;
       mgH = (rate * concentration) / 1000;
     } else if (doseInput) {
-      mgH = doseInput * weight;
+      const mgKgH_input = doseToMgKgH(doseInput, doseUnit);
+       mgH = mgKgH_input * weight;
       mlH = (mgH * 1000) / concentration;
     } else {
       doseWarning.textContent = i18n[currentLang].warnings.enterRateOrDose;
@@ -262,4 +280,5 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
 });
+
 

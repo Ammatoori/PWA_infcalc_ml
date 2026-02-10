@@ -210,17 +210,19 @@ function doseToMgKgH(value, doseUnit) {
     let mlH = null;
     let mgH = null;
 
-    if (rate) {
-      mlH = rate;
-      mgH = (rate * concentration) / 1000;
-    } else if (doseInput) {
-      const mgKgH_input = doseToMgKgH(doseInput, doseUnit);
-       mgH = mgKgH_input * weight;
-      mlH = (mgH * 1000) / concentration;
-    } else {
-      doseWarning.textContent = i18n[currentLang].warnings.enterRateOrDose;
-      return;
-    }
+    const concUgMl = concToUgPerMl(concentration, unit);
+
+if (rate) {
+  mlH = rate;
+  mgH = (mlH * concUgMl) / 1000;
+} else if (doseInput) {
+  const mgKgH_input = doseToMgKgH(doseInput, doseUnit);
+  mgH = mgKgH_input * weight;
+  mlH = (mgH * 1000) / concUgMl;
+} else {
+  doseWarning.textContent = i18n[currentLang].warnings.enterRateOrDose;
+  return;
+}
 
     const mgKgH = mgH / weight;
     const ugKgH = mgKgH * 1000;
@@ -290,6 +292,7 @@ function doseToMgKgH(value, doseUnit) {
   };
 
 });
+
 
 
 
